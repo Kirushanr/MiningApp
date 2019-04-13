@@ -1,0 +1,12 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variables file
+.env
+.env.test
+
+# visual studio code 
+.vscode
+
+#Git folder
+.git
