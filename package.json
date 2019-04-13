@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./app.js",
+    "watch": "nodemon ./app.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -16,5 +17,8 @@
   "main": "app.js",
   "author": "Kirushan",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^1.18.11"
+  }
 }
