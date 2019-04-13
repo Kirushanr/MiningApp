@@ -10,7 +10,14 @@ exports.getAssesments = (req, res) => {
 //get an assesment given an id
 exports.getAssesment = (req, res) => {
     
-    const assesment = Assessment.findOne({ assesmentId: req.params.id }).exec();
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+
+    const assesment = Assessment.findOne({ assesmentId: req.params.id }).exec(); 
+    
     assesment.then(document => {
         if (!document) {
             res.status(200).json({ "message": "Assesment detail not found" });

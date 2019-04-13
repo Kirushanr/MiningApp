@@ -4,7 +4,7 @@ const { body } = require('express-validator/check');
 
 exports.validate = (method) => {
     switch (method) {
-        case 'POST': {
+        case 'Assesment': {
             return [
                 body('assesmentId')
                 .isInt().withMessage('Please enter a valid assesment number E.g. 19465 '),
@@ -31,6 +31,12 @@ exports.validate = (method) => {
 
                 body('Notes').trim().escape()
 
+            ];
+            
+        }
+        case 'AssesmentId':{
+            return [
+                check('id').isInt().withMessage('Please enter a valid assesment number E.g. 19465 ')
             ];
         }
     }
