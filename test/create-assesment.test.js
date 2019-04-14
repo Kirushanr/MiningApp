@@ -25,7 +25,7 @@ describe('Test the POST /api/assessment/create route', function () {
 
     it('should create an assessment', (done) => {
         let assessment = {
-            assesmentId: 195564,
+            assessmentId: 195564,
             vendorName: 'Apple Inc',
             safety: 4,
             safetyComment: 'Very safe equipment',
@@ -41,7 +41,7 @@ describe('Test the POST /api/assessment/create route', function () {
             res.should.have.status(200);
             res.body.should.be.a('object');
             res.body.should.have.property('data');
-            res.body.data.should.have.property('assesmentId').eql(assessment.assesmentId);
+            res.body.data.should.have.property('assessmentId').eql(assessment.assessmentId);
            done();  
         });
 

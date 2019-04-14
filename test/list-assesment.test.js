@@ -27,7 +27,7 @@ describe('Test the GET /api/assessment/:id route', function () {
 
         it('it should retrive the assessment by the given assessment id', (done) => {
             const assessment = new Assessment({
-                assesmentId: 195564,
+                assessmentId: 195564,
                 vendorName: 'Apple Inc',
                 safety: 4,
                 safetyComment: 'Very safe equipment',
@@ -40,7 +40,7 @@ describe('Test the GET /api/assessment/:id route', function () {
             assessment.save((error, document) => {
 
                 chai.request(server)
-                    .get('/api/assessment/' + document.assesmentId)
+                    .get('/api/assessment/' + document.assessmentId)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -50,7 +50,7 @@ describe('Test the GET /api/assessment/:id route', function () {
                         res.body.data.should.have.property('quality');
                         res.body.data.should.have.property('qualityComment');
                         res.body.data.should.have.property('Notes');
-                        res.body.data.should.have.property('assesmentId').eql(document.assesmentId);
+                        res.body.data.should.have.property('assessmentId').eql(document.assessmentId);
                         done();
                     });
             });

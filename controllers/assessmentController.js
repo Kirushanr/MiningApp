@@ -15,7 +15,7 @@ exports.getAssesment = (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const assessment = Assessment.findOne({ assesmentId: req.params.id }).exec(); 
+    const assessment = Assessment.findOne({ assessmentId: req.params.id }).exec(); 
     
     assessment.then(document => {
         if (!document) {
