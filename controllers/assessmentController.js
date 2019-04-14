@@ -9,14 +9,14 @@ exports.getAssesments = (req, res) => {
 
 //get an assessment given an id
 exports.getAssesment = (req, res) => {
-    
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const assessment = Assessment.findOne({ assessmentId: req.params.id }).exec(); 
-    
+    const assessment = Assessment.findOne({ assessmentId: req.params.id }).exec();
+
     assessment.then(document => {
         if (!document) {
             res.status(404).json({ "message": "Assessment detail not found" });
@@ -39,14 +39,21 @@ exports.createAssesment = (req, res) => {
     }
 
     //destructuring to avoid mass assignment
-    const {assessmentId, vendorName, safety, safetyComment,quality,qualityComment,Notes} = req.body;
-    
-    const newAssesment = new Assessment({assessmentId,vendorName,safety,safetyComment,quality,qualityComment,Notes});
-    
+    const { assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes } = req.body;
+
+    const newAssesment = new Assessment({ assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes });
+
     newAssesment.save()
-        .then((document) => res.json({ status: 200, message: 'Assessment created successfully', data: document }))
+        .then((document) => res.status(200).json({ message: 'Assessment created successfully', data: document }))
         .catch(error => {
-            let message = errorHandler.getErrorMessage(error);
-            res.status(500).json({ status: 500, message: message });
+
+            if (error.name === 'MongoError' && error.code === 11000) {
+                let error = [{"location": "body", "param": "assessmentId","value": assessmentId, "msg": "Assessment already exists"}];
+                res.status(422).json({errors:error});
+            }
+            else{
+                res.status(500).json({ message: 'Internal server error' });
+            }
+           
         });
 };
