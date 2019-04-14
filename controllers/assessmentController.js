@@ -38,7 +38,11 @@ exports.createAssesment = (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const newAssesment = new Assessment(req.body);
+    //destructuring to avoid mass assignment
+    const {assessmentId, vendorName, safety, safetyComment,quality,qualityComment,Notes} = req.body;
+    
+    const newAssesment = new Assessment({assessmentId,vendorName,safety,safetyComment,quality,qualityComment,Notes});
+    
     newAssesment.save()
         .then((document) => res.json({ status: 200, message: 'Assessment created successfully', data: document }))
         .catch(error => {
