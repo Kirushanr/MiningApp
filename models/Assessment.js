@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const assesmentSchema = new mongoose.Schema({
 
-    assesmentId: {
+    assessmentId: {
         type: Number,
         unique: true,
         required:true
@@ -25,7 +25,6 @@ const assesmentSchema = new mongoose.Schema({
     },
     quality:{
         type : String,
-        enum : ['Bad', 'Average', 'Good', 'Excellent'],
         required : true
     },
     qualityComment:{
