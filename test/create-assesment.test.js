@@ -47,6 +47,42 @@ describe('Test the POST /api/assessment/create route', function () {
 
     });
 
+    it('should not create an assesment with an existing id', (done) => {
+
+        const assessment = new Assessment({
+            assessmentId: 195564,
+            vendorName: 'Apple Inc',
+            safety: 1,
+            safetyComment: 'Very safe equipment',
+            quality: 'Good',
+            qualityComment: 'Exceeds expectation',
+            Notes: 'None'
+        });
+
+        assessment.save((error, document) => {
+            let assessment = {
+                assessmentId: 195564,
+                vendorName: 'Apple Inc',
+                safety: 1,
+                safetyComment: 'Very safe equipment',
+                quality: 'Good',
+                qualityComment: 'Exceeds expectation',
+                Notes: 'None'
+            };
+
+            chai.request(server)
+                .post('/api/assessment')
+                .send(assessment)
+                .end((err, res) => {
+                    res.should.have.status(422);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('errors');
+                    res.body.errors[0].should.have.property('msg').eql('Assessment already exists');
+                    done();
+                });
+        });
+    });
+
     context('## with invalid inputs', () => {
         it('should return errors when required parameters not passed', (done) => {
             let assessment = {
@@ -116,29 +152,29 @@ describe('Test the POST /api/assessment/create route', function () {
         });
 
         context('# quality values', () => {
-            it('should return error when quality does not belong to Good/Bad/Average/Excellent', (done)=>{
+            it('should return error when quality does not belong to Good/Bad/Average/Excellent', (done) => {
                 let assessment = {
                     assessmentId: 195564,
                     vendorName: 'Apple Inc',
-                    safety: 2,
+                    safety: 4,
                     safetyComment: 'Safe',
                     quality: 'Better',
-                    qualityComment: '',
+                    qualityComment: 'Needs improvement',
                     Notes: 'None'
                 };
 
                 chai.request(server)
-                .post('/api/assessment')
-                .send(assessment)
-                .end((err, res) => {
-                    res.should.have.status(422);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('errors');
-                    res.body.errors[0].should.have.property('param').eql('quality');
-                    done();
-                });
+                    .post('/api/assessment')
+                    .send(assessment)
+                    .end((err, res) => {
+                        res.should.have.status(422);
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('errors');
+                        res.body.errors[0].should.have.property('param').eql('quality');
+                        done();
+                    });
             });
-           
+
         });
     });
 
