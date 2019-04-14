@@ -7,7 +7,7 @@ exports.getAssesments = (req, res) => {
     res.send('TO BE IMPLEMENTED');
 };
 
-//get an assesment given an id
+//get an assessment given an id
 exports.getAssesment = (req, res) => {
     
     const errors = validationResult(req);
@@ -15,22 +15,21 @@ exports.getAssesment = (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
 
-
-    const assesment = Assessment.findOne({ assesmentId: req.params.id }).exec(); 
+    const assessment = Assessment.findOne({ assesmentId: req.params.id }).exec(); 
     
-    assesment.then(document => {
+    assessment.then(document => {
         if (!document) {
-            res.status(200).json({ "message": "Assesment detail not found" });
+            res.status(404).json({ "message": "Assessment detail not found" });
         }
         res.status(200).json({ message: "Assement found", data: document });
     }).catch(error => {
         if (error.name === 'CastError') {
-            res.status(422).json({ 'message': 'Please enter a correct assesment id (Eg. 1943)' });
+            res.status(422).json({ 'message': 'Please enter a correct assessment id (Eg. 1943)' });
         }
     });
 };
 
-//create a new assesment
+//create a new assessment
 exports.createAssesment = (req, res) => {
 
     //validate & sanitize the input
