@@ -34,7 +34,7 @@ exports.validate = (method) => {
             ];
             
         }
-        case 'AssesmentId':{
+        case 'AssessmentId':{
             return [
                 check('id').isInt().withMessage('Please enter a valid assessment number E.g. 19465 ')
             ];
