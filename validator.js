@@ -4,10 +4,10 @@ const { body } = require('express-validator/check');
 
 exports.validate = (method) => {
     switch (method) {
-        case 'Assesment': {
+        case 'Assessment': {
             return [
-                body('assesmentId')
-                .isInt().withMessage('Please enter a valid assesment number E.g. 19465 '),
+                body('assessmentId')
+                .isInt().withMessage('Please enter a valid assessment number E.g. 19465 '),
                 
                 body('vendorName').not()
                 .isEmpty().withMessage('Please enter vendor name').trim().escape(),
@@ -36,7 +36,7 @@ exports.validate = (method) => {
         }
         case 'AssesmentId':{
             return [
-                check('id').isInt().withMessage('Please enter a valid assesment number E.g. 19465 ')
+                check('id').isInt().withMessage('Please enter a valid assessment number E.g. 19465 ')
             ];
         }
     }

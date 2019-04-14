@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/assessment/:id',validator.validate('AssesmentId'),assessment.getAssesment);
+router.get('/assessment/:id',validator.validate('AssessmentId'),assessment.getAssesment);
 router.post('/assessment',validator.validate('Assessment'),assessment.createAssesment);
 
 
