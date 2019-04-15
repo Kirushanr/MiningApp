@@ -2,7 +2,8 @@ var jwt = require('jsonwebtoken');
 
 var createToken = function (auth) {
     return jwt.sign({
-        id: auth.id
+        id: auth.id,
+        fullName:auth.fullName
     }, process.env.JWT_SECRET,
         {
             expiresIn: "1h"
@@ -33,7 +34,7 @@ module.exports = {
     sendToken: function (req, res) {
         res.setHeader('x-auth-token', req.token);
         console.log(req.token);
-        return res.status(200).send(JSON.stringify(req.user));
+        return res.status(200).json(req.user);
     },
     /**
      * Verify Json Web Token sent by the client
