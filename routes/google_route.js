@@ -10,7 +10,8 @@ router.get('/auth/google/callback',passport.authenticate('google', { failureRedi
  function(req,res,next) {
     
   req.auth = {
-      id: req.id
+      id: req.id,
+      fullName:req.fullName
   };
   next();
 },generateToken, sendToken);
