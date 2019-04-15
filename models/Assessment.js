@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const assesmentSchema = new mongoose.Schema({
 
@@ -34,7 +35,8 @@ const assesmentSchema = new mongoose.Schema({
     },
     Notes:{
         type: String,
-    }
+    },
+    userId: {type: Schema.Types.ObjectId, ref: 'User', required:true},
 });
 
 module.exports = mongoose.model('Assessment', assesmentSchema);
