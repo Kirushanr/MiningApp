@@ -32,21 +32,27 @@ exports.getAssesment = (req, res) => {
 //create a new assessment
 exports.createAssesment = (req, res) => {
 
+    
+    
     //validate & sanitize the input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
-
+    
+    //access the userID from the request
+    const userId = mongoose.Types.ObjectId(req.user.id); 
+    
     //destructuring to avoid mass assignment
     const { assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes } = req.body;
 
-    const newAssesment = new Assessment({ assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes });
+    const newAssesment = new Assessment({ assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes, userId });
 
+    //create new assesment
     newAssesment.save()
         .then((document) => res.status(200).json({ message: 'Assessment created successfully', data: document }))
         .catch(error => {
-
+               
             if (error.name === 'MongoError' && error.code === 11000) {
                 let error = [{"location": "body", "param": "assessmentId","value": assessmentId, "msg": "Assessment already exists"}];
                 res.status(422).json({errors:error});
