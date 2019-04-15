@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Assessment = require('../models/Assessment');
+const request = require('request');
 
 
 //Require the test-dependencies
@@ -12,7 +13,16 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 describe('Test the POST /api/assessment/create route', function () {
+    var value = null;
+    var userId = null;
 
+    before(function (done) {
+        request(process.env.GOOGLE_CALLBACK_URL, function (error, response, body) {
+          value = response.headers['x-auth-token']; 
+          userId = body._id;        
+          done();
+        });
+    });
 
     afterEach(function (done) {
         Assessment.deleteMany().exec()
@@ -23,7 +33,7 @@ describe('Test the POST /api/assessment/create route', function () {
             });
     });
 
-    it('should create an assessment', (done) => {
+    it('should create an assessment', function(done){
         let assessment = {
             assessmentId: 195564,
             vendorName: 'Apple Inc',
@@ -31,13 +41,15 @@ describe('Test the POST /api/assessment/create route', function () {
             safetyComment: 'Very safe equipment',
             quality: 'Good',
             qualityComment: 'Exceeds expectation',
-            Notes: 'None'
+            Notes: 'None',
+            userId:mongoose.Types.ObjectId(userId)
         };
 
         chai.request(server)
             .post('/api/assessment')
+            .set('x-auth-token', value)
             .send(assessment)
-            .end((err, res) => {
+            .end(function(err, res) {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
                 res.body.should.have.property('data');
@@ -47,7 +59,7 @@ describe('Test the POST /api/assessment/create route', function () {
 
     });
 
-    it('should not create an assesment with an existing id', (done) => {
+    it('should not create an assesment with an existing id', function(done) {
 
         const assessment = new Assessment({
             assessmentId: 195564,
@@ -56,10 +68,11 @@ describe('Test the POST /api/assessment/create route', function () {
             safetyComment: 'Very safe equipment',
             quality: 'Good',
             qualityComment: 'Exceeds expectation',
-            Notes: 'None'
+            Notes: 'None',
+            userId:mongoose.Types.ObjectId(userId)
         });
 
-        assessment.save((error, document) => {
+        assessment.save(function(error, document) {
             let assessment = {
                 assessmentId: 195564,
                 vendorName: 'Apple Inc',
@@ -67,13 +80,15 @@ describe('Test the POST /api/assessment/create route', function () {
                 safetyComment: 'Very safe equipment',
                 quality: 'Good',
                 qualityComment: 'Exceeds expectation',
-                Notes: 'None'
+                Notes: 'None',
+                userId:mongoose.Types.ObjectId(userId)
             };
 
             chai.request(server)
                 .post('/api/assessment')
+                .set('x-auth-token', value)
                 .send(assessment)
-                .end((err, res) => {
+                .end(function(err, res){
                     res.should.have.status(422);
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
@@ -83,14 +98,15 @@ describe('Test the POST /api/assessment/create route', function () {
         });
     });
 
-    context('## with invalid inputs', () => {
-        it('should return errors when required parameters not passed', (done) => {
+    context('## with invalid inputs', function() {
+        it('should return errors when required parameters not passed', function(done){
             let assessment = {
                 Notes: 'None'
             };
 
             chai.request(server)
                 .post('/api/assessment')
+                .set('x-auth-token', value)
                 .send(assessment)
                 .end((err, res) => {
                     res.should.have.status(422);
@@ -101,9 +117,9 @@ describe('Test the POST /api/assessment/create route', function () {
                 });
         });
 
-        context('#safety out of range (1-5) ', () => {
+        context('#safety out of range (1-5) ', function() {
 
-            it('should return error when safety value is less than 1', (done) => {
+            it('should return error when safety value is less than 1', function(done)  {
                 let assessment = {
                     assessmentId: 195564,
                     vendorName: 'Apple Inc',
@@ -111,13 +127,15 @@ describe('Test the POST /api/assessment/create route', function () {
                     safetyComment: 'Very safe equipment',
                     quality: 'Good',
                     qualityComment: 'Exceeds expectation',
-                    Notes: 'None'
+                    Notes: 'None',
+                    userId:mongoose.Types.ObjectId(userId)
                 };
 
                 chai.request(server)
                     .post('/api/assessment')
+                    .set('x-auth-token', value)
                     .send(assessment)
-                    .end((err, res) => {
+                    .end(function(err, res) {
                         res.should.have.status(422);
                         res.body.should.be.a('object');
                         res.body.should.have.property('errors');
@@ -127,7 +145,7 @@ describe('Test the POST /api/assessment/create route', function () {
 
             });
 
-            it('should return error when safety value is less than 1', (done) => {
+            it('should return error when safety value is less than 1', function(done) {
                 let assessment = {
                     assessmentId: 195564,
                     vendorName: 'Apple Inc',
@@ -135,13 +153,15 @@ describe('Test the POST /api/assessment/create route', function () {
                     safetyComment: 'Very safe equipment',
                     quality: 'Good',
                     qualityComment: 'Exceeds expectation',
-                    Notes: 'None'
+                    Notes: 'None',
+                    userId:mongoose.Types.ObjectId(userId)
                 };
 
                 chai.request(server)
                     .post('/api/assessment')
+                    .set('x-auth-token', value)
                     .send(assessment)
-                    .end((err, res) => {
+                    .end(function(err, res) {
                         res.should.have.status(422);
                         res.body.should.be.a('object');
                         res.body.should.have.property('errors');
@@ -151,7 +171,7 @@ describe('Test the POST /api/assessment/create route', function () {
             });
         });
 
-        context('# quality values', () => {
+        context('# quality values', function() {
             it('should return error when quality does not belong to Good/Bad/Average/Excellent', (done) => {
                 let assessment = {
                     assessmentId: 195564,
@@ -160,13 +180,15 @@ describe('Test the POST /api/assessment/create route', function () {
                     safetyComment: 'Safe',
                     quality: 'Better',
                     qualityComment: 'Needs improvement',
-                    Notes: 'None'
+                    Notes: 'None',
+                    userId:mongoose.Types.ObjectId(userId)
                 };
 
                 chai.request(server)
                     .post('/api/assessment')
+                    .set('x-auth-token', value)
                     .send(assessment)
-                    .end((err, res) => {
+                    .end(function(err, res){
                         res.should.have.status(422);
                         res.body.should.be.a('object');
                         res.body.should.have.property('errors');
