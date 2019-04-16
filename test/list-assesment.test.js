@@ -11,7 +11,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 
-describe('Test the GET /api/assessment/:id route', function () {
+describe('Test the GET /api/assessments/:id route', function () {
     var value = null;
     var userId = null;
 
@@ -61,7 +61,7 @@ describe('Test the GET /api/assessment/:id route', function () {
             assessment.save(function(error, document){
                 
                 chai.request(server)
-                    .get('/api/assessment/' + document.assessmentId)
+                    .get('/api/assessments/' + document.assessmentId)
                     .set('x-auth-token', value)
                     .end(function(err, res) {
                         res.should.have.status(200);
@@ -80,7 +80,7 @@ describe('Test the GET /api/assessment/:id route', function () {
 
         it('should return Assessment detail not found', (done) => {
             chai.request(server)
-                .get('/api/assessment/' + 195564)
+                .get('/api/assessments/' + 195564)
                 .set('x-auth-token', value)
                 .end(function(err, res) {
                     res.should.have.status(404);
@@ -96,7 +96,7 @@ describe('Test the GET /api/assessment/:id route', function () {
         it('should return error ', (done) => {
           
             chai.request(server)
-                .get('/api/assessment/' + '12a')
+                .get('/api/assessments/' + '12a')
                 .set('x-auth-token', value)
                 .end((err, res) => {
                     res.should.have.status(422);
@@ -111,7 +111,7 @@ describe('Test the GET /api/assessment/:id route', function () {
     context('not passing assessment id as route parameter', function() {
         it('it should return 404 ', function(done){
             chai.request(server)
-                .get('/api/assessment/')
+                .get('/api/assessments/')
                 .set('x-auth-token', value)
                 .end((err, res) => {
                     res.should.have.status(404);

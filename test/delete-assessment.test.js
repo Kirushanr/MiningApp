@@ -12,7 +12,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Test the DELETE /api/assessment/:id route', function () {
+describe('Test the DELETE /api/assessments/:id route', function () {
     var value = null;
     var userId = null;
 
@@ -37,7 +37,7 @@ describe('Test the DELETE /api/assessment/:id route', function () {
     context('#Validating assesment ID', function () {
         it('should return error when the ID is invalid', function (done) {
             chai.request(server)
-                .delete('/api/assessment/65a')
+                .delete('/api/assessments/65a')
                 .set('x-auth-token', value)
                 .end(function (err, res) {
                     res.should.have.status(422);
@@ -50,7 +50,7 @@ describe('Test the DELETE /api/assessment/:id route', function () {
 
         it('should return 404 when assessment ID does not exist', function (done) {
             chai.request(server)
-                .delete('/api/assessment/65')
+                .delete('/api/assessments/65')
                 .set('x-auth-token', value)
                 .end(function (err, res) {
                     res.should.have.status(404);
@@ -76,7 +76,7 @@ describe('Test the DELETE /api/assessment/:id route', function () {
             assessment.save(function (error, document) {
                 
                 chai.request(server)
-                    .delete('/api/assessment/' + 195564)
+                    .delete('/api/assessments/' + 195564)
                     .set('x-auth-token', value)
                     .end(function (err, res) {
                         res.should.have.status(200);

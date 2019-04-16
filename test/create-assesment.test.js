@@ -12,7 +12,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Test the POST /api/assessment/create route', function () {
+describe('Test the POST /api/assessments/create route', function () {
     var value = null;
     var userId = null;
 
@@ -56,7 +56,7 @@ describe('Test the POST /api/assessment/create route', function () {
         };
 
         chai.request(server)
-            .post('/api/assessment')
+            .post('/api/assessments')
             .set('x-auth-token', value)
             .send(assessment)
             .end(function (err, res) {
@@ -95,7 +95,7 @@ describe('Test the POST /api/assessment/create route', function () {
             };
 
             chai.request(server)
-                .post('/api/assessment')
+                .post('/api/assessments')
                 .set('x-auth-token', value)
                 .send(assessment)
                 .end(function (err, res) {
@@ -115,7 +115,7 @@ describe('Test the POST /api/assessment/create route', function () {
             };
 
             chai.request(server)
-                .post('/api/assessment')
+                .post('/api/assessments')
                 .set('x-auth-token', value)
                 .send(assessment)
                 .end((err, res) => {
@@ -142,7 +142,7 @@ describe('Test the POST /api/assessment/create route', function () {
                 };
 
                 chai.request(server)
-                    .post('/api/assessment')
+                    .post('/api/assessments')
                     .set('x-auth-token', value)
                     .send(assessment)
                     .end(function (err, res) {
@@ -168,7 +168,7 @@ describe('Test the POST /api/assessment/create route', function () {
                 };
 
                 chai.request(server)
-                    .post('/api/assessment')
+                    .post('/api/assessments')
                     .set('x-auth-token', value)
                     .send(assessment)
                     .end(function (err, res) {
@@ -195,7 +195,7 @@ describe('Test the POST /api/assessment/create route', function () {
                 };
 
                 chai.request(server)
-                    .post('/api/assessment')
+                    .post('/api/assessments')
                     .set('x-auth-token', value)
                     .send(assessment)
                     .end(function (err, res) {

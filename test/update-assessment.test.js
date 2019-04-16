@@ -10,7 +10,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Test the PUT /api/assessment/:id route', function () {
+describe('Test the PUT /api/assessmentss/:id route', function () {
     var value = null;
     var userId = null;
 
@@ -24,7 +24,7 @@ describe('Test the PUT /api/assessment/:id route', function () {
     });
 
     beforeEach(function (done) {
-        
+
         Assessment.deleteMany().exec()
             .then(() => {
                 done();
@@ -32,7 +32,7 @@ describe('Test the PUT /api/assessment/:id route', function () {
     });
 
     context('update assessment', function () {
-       
+
 
         it('should update assessment detail', function (done) {
             let newAssessment = {
@@ -45,13 +45,13 @@ describe('Test the PUT /api/assessment/:id route', function () {
                 Notes: 'None',
                 userId: mongoose.Types.ObjectId(userId)
             };
-            const assessment= new Assessment(newAssessment);
-            assessment.save(function(error,document){
-                if(error) done(error);
+            const assessment = new Assessment(newAssessment);
+            assessment.save(function (error, document) {
+                if (error) done(error);
 
                 newAssessment.vendorName = 'Komatsu';
                 chai.request(server)
-                    .put('/api/assessment/' + 195564)
+                    .put('/api/assessments/' + 195564)
                     .send(newAssessment)
                     .set('x-auth-token', value)
                     .end(function (err, res) {
@@ -60,13 +60,13 @@ describe('Test the PUT /api/assessment/:id route', function () {
                         res.body.should.have.property('data');
                         res.body.data.should.have.property('vendorName').eql(newAssessment.vendorName);
                         done();
-                });
+                    });
 
             });
 
-            it('should give an error when the assessment does not exist', function(){
-                    chai.request(server)
-                    .put('/api/assessment/' + 195564)
+            it('should give an error when the assessment does not exist', function () {
+                chai.request(server)
+                    .put('/api/assessments/' + 195564)
                     .send(newAssessment)
                     .set('x-auth-token', value)
                     .end(function (err, res) {
@@ -75,7 +75,7 @@ describe('Test the PUT /api/assessment/:id route', function () {
                         res.body.should.have.property('data');
                         res.body.data.should.have.lengthOf(0);
                         done();
-                });
+                    });
             });
 
         });

@@ -4,16 +4,15 @@ const assessment= require('../controllers/assessmentController');
 const {validate} = require('../validator');
 const {verifyToken} = require('../auth/token');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
 
-router.get('/assessment/:id',[verifyToken,validate('AssessmentId'),assessment.getAssesment]);
-router.post('/assessment',[verifyToken,validate('Assessment'),assessment.createAssesment]);
+router.get('/assessments',[verifyToken,assessment.getAssesments]);
 
-router.delete('/assessment/:id',[verifyToken,validate('AssessmentId'),assessment.deleteAssesment]);
+router.get('/assessments/:id',[verifyToken,validate('AssessmentId'),assessment.getAssesment]);
 
-router.put('/assessment/:id',[verifyToken,validate('Assessment'),assessment.updateAssessment]);
+router.post('/assessments',[verifyToken,validate('Assessment'),assessment.createAssesment]);
+
+router.delete('/assessments/:id',[verifyToken,validate('AssessmentId'),assessment.deleteAssesment]);
+
+router.put('/assessments/:id',[verifyToken,validate('Assessment'),assessment.updateAssessment]);
 
 module.exports = router;
