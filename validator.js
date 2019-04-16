@@ -1,3 +1,7 @@
+/**
+ * Middleware to validate  
+ * user inputs
+ */
 const { check } = require('express-validator/check');
 const { sanitize } = require('express-validator/filter');
 const { body } = require('express-validator/check');
