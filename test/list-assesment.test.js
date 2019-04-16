@@ -45,7 +45,7 @@ describe('Test the GET /api/assessments/:id route', function () {
 
     context('assessment id passed as route parameter', function(){
 
-        it('it should retrive the assessment by the given assessment id', function(done){
+        it('it should retrieve the assessment by the given assessment id', function(done){
 
             const assessment = new Assessment({
                 assessmentId: 195564,
@@ -108,13 +108,17 @@ describe('Test the GET /api/assessments/:id route', function () {
     });
 
 
-    context('not passing assessment id as route parameter', function() {
-        it('it should return 404 ', function(done){
+    context('retrieve all assessments', function() {
+        it('it should return empty array when no assessments are created by a user ', function(done){
             chai.request(server)
                 .get('/api/assessments/')
                 .set('x-auth-token', value)
                 .end((err, res) => {
-                    res.should.have.status(404);
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('data');
+                    res.body.data.should.be.a('array');
+                    res.body.data.should.be.lengthOf(0);
                     done();
                 });
 
