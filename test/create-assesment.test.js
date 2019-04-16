@@ -34,7 +34,7 @@ describe('Test the POST /api/assessment/create route', function () {
             });
     });
 
-    afterEach(function (done) {
+    beforeEach(function (done) {
         Assessment.deleteMany().exec()
             .then(() => {
                 done();
