@@ -5,13 +5,13 @@ const {validate} = require('../validator');
 const {verifyToken} = require('../auth/token');
 
 
-router.get('/assessments',[verifyToken,assessment.getAssesments]);
+router.get('/assessments',[verifyToken,assessment.getAssessments]);
 
-router.get('/assessments/:id',[verifyToken,validate('AssessmentId'),assessment.getAssesment]);
+router.get('/assessments/:id',[verifyToken,validate('AssessmentId'),assessment.getAssessment]);
 
-router.post('/assessments',[verifyToken,validate('Assessment'),assessment.createAssesment]);
+router.post('/assessments',[verifyToken,validate('Assessment'),assessment.createAssessment]);
 
-router.delete('/assessments/:id',[verifyToken,validate('AssessmentId'),assessment.deleteAssesment]);
+router.delete('/assessments/:id',[verifyToken,validate('AssessmentId'),assessment.deleteAssessment]);
 
 router.put('/assessments/:id',[verifyToken,validate('Assessment'),assessment.updateAssessment]);
 

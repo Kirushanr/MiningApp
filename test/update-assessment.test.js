@@ -10,7 +10,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Test the PUT /api/assessmentss/:id route', function () {
+describe('Test the PUT /api/assessments/:id route', function () {
     var value = null;
     var userId = null;
 
