@@ -1,5 +1,14 @@
+/**
+ * Module to handle generation and 
+ * verification of Json Web Tokens
+ */
 var jwt = require('jsonwebtoken');
 
+/**
+ * Create a JSON web token
+ * from the Authenticated user object.
+ * @param {*} auth 
+ */
 var createToken = function (auth) {
     return jwt.sign({
         id: auth.id,
@@ -33,7 +42,6 @@ module.exports = {
      */
     sendToken: function (req, res) {
         res.setHeader('x-auth-token', req.token);
-        console.log(req.token);
         return res.status(200).json(req.user);
     },
     /**
@@ -43,7 +51,7 @@ module.exports = {
      * @param {*} next 
      */
     verifyToken: function (req, res, next) {
-
+        
         let token = req.header('x-auth-token') || req.authorization;
         //check if the token is available
         if (token) {
@@ -52,18 +60,20 @@ module.exports = {
                 
                 if (err) {
                     if (err.name === 'TokenExpiredError') {
-                        return res.status(403).json({ message: 'Expired token' });
+                        let error = [{ "location": "header", "param": "x-auth-token", "value": token, "msg": "Token has expired" }];
+                        return res.status(401).json({ errors:error });
                     }
-                    return res.status(403).json({ message: 'Forbidden' });
+                   
+                    return res.status(403).json({ message:'Forbidden'});
                 } else {
                     req.user = decoded;
                     next();
                 }
             });
         } else {
-
+            
             return res.status(403).json({
-                message: 'Forbidden'
+                message:'Forbidden'
             });
         }
     }
