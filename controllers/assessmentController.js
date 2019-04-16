@@ -1,25 +1,36 @@
 const mongoose = require('mongoose');
-const errorHandler = require('../errorHandler');
 const Assessment = mongoose.model('Assessment');
 const { validationResult } = require('express-validator/check');
 
-exports.getAssesments = (req, res) => {
-    res.send('TO BE IMPLEMENTED');
+
+//retrieve all the assessments of a user
+exports.getAssessments = (req, res) => {
+    const userId = mongoose.Types.ObjectId(req.user.id);
+    const assessment = Assessment.findOne({ assessmentId: req.params.id, userId: userId }).exec();
+
+    assessment.then((document) => {
+        let message = document ? 'Assessments found' : 'No assessments were created';
+        let data = document ? document :[];
+        res.status(200).json({ message: message, data: data  });
+    }).catch(error => {
+        res.status(500).json({ message: 'Internal server error' });
+    });
+
 };
 
-//get an assessment given an id
-exports.getAssesment = (req, res) => {
+//get an assessment by given id
+exports.getAssessment = (req, res) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
-
-    const assessment = Assessment.findOne({ assessmentId: req.params.id }).exec();
+    const userId = mongoose.Types.ObjectId(req.user.id);
+    const assessment = Assessment.findOne({ assessmentId: req.params.id, userId: userId }).exec();
 
     assessment.then(document => {
         if (!document) {
-            res.status(404).json({ "message": "Assessment detail not found", data:[] });
+            res.status(404).json({ "message": "Assessment detail not found", data: [] });
         }
         res.status(200).json({ message: "Assessment found", data: document });
     }).catch(error => {
@@ -31,7 +42,7 @@ exports.getAssesment = (req, res) => {
 };
 
 //create a new assessment
-exports.createAssesment = (req, res) => {
+exports.createAssessment = (req, res) => {
 
     //validate & sanitize the input
     const errors = validationResult(req);
@@ -45,10 +56,10 @@ exports.createAssesment = (req, res) => {
     //destructuring to avoid mass assignment
     const { assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes } = req.body;
 
-    const newAssesment = new Assessment({ assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes, userId });
+    const newAssessment = new Assessment({ assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes, userId });
 
-    //create new assesment
-    newAssesment.save()
+    //create new assessment
+    newAssessment.save()
         .then((document) => res.status(200).json({ message: 'Assessment created successfully', data: document }))
         .catch(error => {
 
@@ -64,30 +75,32 @@ exports.createAssesment = (req, res) => {
         });
 };
 
-exports.deleteAssesment = (req, res) =>{
+//delete an assessment
+exports.deleteAssessment = (req, res) => {
     //validate & sanitize the input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const assessmentId  = req.params.id;
+    const assessmentId = req.params.id;
     const userId = mongoose.Types.ObjectId(req.user.id);
-    console.log(userId + " " + assessmentId);
 
-    
+
+
     Assessment.findOneAndDelete({ assessmentId: assessmentId, userId: userId }, function (error, document) {
         if (error) res.status(500).json({ message: 'Internal server error' });
-        console.log(document)
+     
         if (document) {
-            res.status(200).json({ message: 'Assessment deleted successfully', data:document});
+            res.status(200).json({ message: 'Assessment deleted successfully', data: document });
         } else {
-            res.status(404).json({ message: 'No matching assessment found', data:[] });
+            res.status(404).json({ message: 'No matching assessment found', data: [] });
         }
     });
 
 };
 
+//update an existing assessment
 exports.updateAssessment = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
