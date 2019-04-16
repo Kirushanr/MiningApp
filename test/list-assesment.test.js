@@ -18,7 +18,8 @@ describe('Test the GET /api/assessment/:id route', function () {
     before(function (done) {
         request(process.env.GOOGLE_CALLBACK_URL, function (error, response, body) {
           value = response.headers['x-auth-token']; 
-          userId = body._id;
+          var info = JSON.parse(body);
+          userId = info._id;
             
           done();
         });
@@ -32,6 +33,14 @@ describe('Test the GET /api/assessment/:id route', function () {
             });
     });
 
+    after(function (done) {
+        Assessment.deleteMany().exec()
+            .then(() => {
+                done();
+            }).catch(error => {
+                console.log(error);
+            });
+    });
 
 
     context('assessment id passed as route parameter', function(){
@@ -83,7 +92,7 @@ describe('Test the GET /api/assessment/:id route', function () {
         });
     });
 
-    context('non integer passed as assessment id', () => {
+    context('non integer passed as assessment id', function() {
         it('should return error ', (done) => {
           
             chai.request(server)
