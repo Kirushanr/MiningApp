@@ -12,6 +12,8 @@ router.get('/', function(req, res, next) {
 router.get('/assessment/:id',[verifyToken,validate('AssessmentId'),assessment.getAssesment]);
 router.post('/assessment',[verifyToken,validate('Assessment'),assessment.createAssesment]);
 
+router.delete('/assessment/:id',[verifyToken,validate('AssessmentId'),assessment.deleteAssesment]);
 
+router.put('/assessment/:id',[verifyToken,validate('Assessment'),assessment.updateAssessment]);
 
 module.exports = router;
