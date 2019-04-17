@@ -123,6 +123,35 @@ describe('Test the GET /api/assessments/:id route', function () {
                 });
 
         });
+
+        it('it should return the assessments are created by a user ', function(done){
+            const assessment = new Assessment({
+                assessmentId: 195564,
+                vendorName: 'Apple Inc',
+                safety: 4,
+                safetyComment: 'Very safe equipment',
+                quality: 'Good',
+                qualityComment: 'Exceeds expectation',
+                Notes: 'None',
+                userId:mongoose.Types.ObjectId(userId)
+            });
+
+            assessment.save(function(error, document){
+                chai.request(server)
+                .get('/api/assessments/')
+                .set('x-auth-token', value)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('data');
+                    res.body.data.should.be.a('array');
+                    res.body.data.should.be.lengthOf(1);
+                    done();
+                });
+            });
+          
+
+        });
     });
 });
 
