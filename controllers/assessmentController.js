@@ -26,7 +26,7 @@ exports.getAssessment = (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
     const userId = mongoose.Types.ObjectId(req.user.id);
-    const assessment = Assessment.findOne({ assessmentId: req.params.id, userId: userId }).exec();
+    const assessment = Assessment.findOne({ assessmentId: req.params.assessmentId, userId: userId }).exec();
 
     assessment.then(document => {
         if (!document) {
@@ -35,7 +35,7 @@ exports.getAssessment = (req, res) => {
         res.status(200).json({ message: "Assessment found", data: document });
     }).catch(error => {
         if (error.name === 'CastError') {
-            let error = [{ "location": "body", "param": "assessmentId", "value": req.params.id, "msg": "Assessment already exists" }];
+            let error = [{ "location": "body", "param": "assessmentId", "value": req.params.assessmentId, "msg": "Assessment already exists" }];
             res.status(422).json({ 'message': 'Please enter a correct assessment id (Eg. 1943)' });
         }
     });
@@ -83,7 +83,7 @@ exports.deleteAssessment = (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const assessmentId = req.params.id;
+    const assessmentId = req.params.assessmentId;
     const userId = mongoose.Types.ObjectId(req.user.id);
 
 
@@ -108,9 +108,9 @@ exports.updateAssessment = (req, res) => {
     }
     //access the userID from the request
     const userId = mongoose.Types.ObjectId(req.user.id);
-
+    const assessmentId =req.params.assessmentId;
     //destructuring to avoid mass assignment
-    const { assessmentId, vendorName, safety, safetyComment, quality, qualityComment, Notes } = req.body;
+    const { vendorName, safety, safetyComment, quality, qualityComment, Notes } = req.body;
 
     Assessment.findOneAndUpdate({ userId: userId, assessmentId: assessmentId }, { vendorName, safety, safetyComment, quality, qualityComment, Notes },
         { new: true }, function (error, document) {
