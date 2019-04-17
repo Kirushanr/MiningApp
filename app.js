@@ -8,7 +8,7 @@ mongoose.connect(process.env.DB_HOST,{ useNewUrlParser: true,useCreateIndex: tru
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.connection.on('error', (err) => {
-  console.log(error);
+  console.log(err);
 });
 
 // import all of our models
