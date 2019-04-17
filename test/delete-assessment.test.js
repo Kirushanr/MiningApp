@@ -12,7 +12,7 @@ const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Test the DELETE /api/assessments/:id route', function () {
+describe('Test the DELETE /api/assessments/:assessmentId route', function () {
     var value = null;
     var userId = null;
 
@@ -43,7 +43,7 @@ describe('Test the DELETE /api/assessments/:id route', function () {
                     res.should.have.status(422);
                     res.body.should.be.a('object');
                     res.body.should.have.property('errors');
-                    res.body.errors[0].should.have.property('param').eql('id');
+                    res.body.errors[0].should.have.property('param').eql('assessmentId');
                     done();
                 });
         });
@@ -60,8 +60,9 @@ describe('Test the DELETE /api/assessments/:id route', function () {
         });
 
         it('should return the deleted assessment when delete is successful', function (done) {
-           let newAssessment={
-            assessmentId: 195564,
+            
+            let newAssessment={
+            assessmentId:195564,
             vendorName: 'Apple Inc',
             safety: 1,
             safetyComment: 'Very safe equipment',
@@ -76,7 +77,7 @@ describe('Test the DELETE /api/assessments/:id route', function () {
             assessment.save(function (error, document) {
                 
                 chai.request(server)
-                    .delete('/api/assessments/' + 195564)
+                    .delete('/api/assessments/' + newAssessment.assessmentId)
                     .set('x-auth-token', value)
                     .end(function (err, res) {
                         res.should.have.status(200);

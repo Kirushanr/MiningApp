@@ -36,7 +36,7 @@ describe('Test the PUT /api/assessments/:id route', function () {
 
         it('should update assessment detail', function (done) {
             let newAssessment = {
-                assessmentId: 195564,
+                assessmentId:195564,
                 vendorName: 'Apple Inc',
                 safety: 1,
                 safetyComment: 'Very safe equipment',
@@ -51,7 +51,7 @@ describe('Test the PUT /api/assessments/:id route', function () {
 
                 newAssessment.vendorName = 'Komatsu';
                 chai.request(server)
-                    .put('/api/assessments/' + 195564)
+                    .put('/api/assessments/' + newAssessment.assessmentId)
                     .send(newAssessment)
                     .set('x-auth-token', value)
                     .end(function (err, res) {
