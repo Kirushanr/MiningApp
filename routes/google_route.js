@@ -6,7 +6,7 @@ const passport = require('passport');
 
 //Google Authentication route
 router.get('/auth/google',passport.authenticate('google', { scope: ['profile'] }));
-router.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/auth/google' }),
+router.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/' }),
  function(req,res,next) {
     
   req.auth = {
