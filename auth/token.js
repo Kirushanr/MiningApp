@@ -42,14 +42,8 @@ module.exports = {
      */
     sendToken: function (req, res) {
         
-        if(process.env.NODE_ENV ==='production'){
-            let url =process.env.REDIRECT_URL +'?name='+ encodeURIComponent(req.user.fullName);
-            res.cookie('x-auth-token', req.token);
-            res.redirect(302,process.env.REDIRECT_URL);
-        }else{
-            res.setHeader('x-auth-token', req.token);
-            return res.status(200).json(req.user);
-        }
+        res.setHeader('x-auth-token', req.token);
+        return res.status(200).json(req.user);
         
     },
     /**
