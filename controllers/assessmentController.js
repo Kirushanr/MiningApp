@@ -6,7 +6,7 @@ const { validationResult } = require('express-validator/check');
 //retrieve all the assessments of a user
 exports.getAssessments = (req, res) => {
     const userId = mongoose.Types.ObjectId(req.user.id);
-    const assessment = Assessment.findOne({ assessmentId: req.params.id, userId: userId }).exec();
+    const assessment = Assessment.find({  userId: userId }).exec();
 
     assessment.then((document) => {
         let message = document ? 'Assessments found' : 'No assessments were created';
