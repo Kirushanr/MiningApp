@@ -8,9 +8,8 @@ mongoose.connect(process.env.DB_HOST,{ useNewUrlParser: true,useCreateIndex: tru
 
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.connection.on('error', (err) => {
-  
+  console.log(error);
 });
-
 
 // import all of our models
 require('./models/Assessment');

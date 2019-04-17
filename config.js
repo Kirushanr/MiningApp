@@ -9,7 +9,7 @@ const expressValidator = require('express-validator');
 const passport= require('passport');
 
 const app = express();
-app.use(logger('dev'));
+app.use(logger(process.env.NODE_ENV));
 
 
 // Takes the raw requests and turns them into usable properties on req.body
@@ -30,8 +30,6 @@ app.use(passport.initialize());
 
 app.use(googleRoutes);
 app.use('/api', routes);
-
-
 
 
 module.exports = app;
