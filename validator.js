@@ -10,7 +10,7 @@ exports.validate = (method) => {
     switch (method) {
         case 'Assessment': {
             return [
-                body('assessmentId')
+                check('assessmentId')
                 .isInt().withMessage('Please enter a valid assessment number E.g. 19465 '),
                 
                 body('vendorName').not()
@@ -40,7 +40,7 @@ exports.validate = (method) => {
         }
         case 'AssessmentId':{
             return [
-                check('id').isInt().withMessage('Please enter a valid assessment number E.g. 19465 ')
+                check('assessmentId').isInt().withMessage('Please enter a valid assessment number E.g. 19465 ')
             ];
         }
     }
