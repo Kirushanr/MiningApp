@@ -1,5 +1,5 @@
 /**
- * Module to handle generation and 
+ * Middleware to handle generation and 
  * verification of Json Web Tokens
  */
 var jwt = require('jsonwebtoken');
@@ -24,10 +24,10 @@ var createToken = function (auth) {
  */
 module.exports = {
     /**
-     * Generate JSON webtoken, 
+     * Generate JSON web token, 
      * for authenticated google user
-     * @param {*} req 
-     * @param {*} res 
+     * @param {*} req request object
+     * @param {*} res response 
      * @param {*} next 
      */
     generateToken: function (req, res, next) {
@@ -41,8 +41,16 @@ module.exports = {
      * @param {*} res 
      */
     sendToken: function (req, res) {
-        res.setHeader('x-auth-token', req.token);
-        return res.status(200).json(req.user);
+        
+        if(process.env.NODE_ENV ==='production'){
+            let url =process.env.REDIRECT_URL +'?name='+ encodeURIComponent(req.user.fullName);
+            res.cookie('x-auth-token', req.token);
+            res.redirect(302,process.env.REDIRECT_URL);
+        }else{
+            res.setHeader('x-auth-token', req.token);
+            return res.status(200).json(req.user);
+        }
+        
     },
     /**
      * Verify Json Web Token sent by the client
