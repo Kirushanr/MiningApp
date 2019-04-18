@@ -38,7 +38,7 @@ Run ```npm install``` to install required packages.
 | HTTP method   | RESOURCE      |    DESCRIPTION         | 
 | ------------- |:--------------|:-----------------------| 
 | GET           |api/assessments|Retrieve all assessments|
-| GET           |api/assessment/1| Retrieve the details for assessment 1 if exists|
+| GET           |api/assessments/1| Retrieve the details for assessment 1 if exists|
 | POST          |api/assessments|Create new assessment   |
 | PUT           |api/assessments/1 |Update details of assessment if exists|
 | DELETE        |api/assessments/1 |Delete assessment if exists|
